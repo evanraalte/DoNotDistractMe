@@ -65,4 +65,4 @@ def background_process_test():
     col_item['time'] = datetime.timestamp(datetime.now())
     col_items.insert_one(col_item)
 
-    return "nothing"
+    return json.dumps(getData())
