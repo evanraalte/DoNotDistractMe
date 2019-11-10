@@ -1,0 +1,28 @@
+version: "3"
+services:
+  web:
+    build: 
+      context: app
+      dockerfile: Dockerfile
+    volumes:
+      - .:/code
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_ENV: development
+      MONGODB_DATABASE: flaskdb
+      MONGODB_USERNAME: erik
+      MONGODB_PASSWORD: password
+      MONGODB_HOSTNAME: mongodb
+  # mongodb:
+  #   image: mongo:4.0.8
+  #   container_name: mongodb
+  #   command: mongod --auth
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: erik
+  #     MONGO_INITDB_ROOT_PASSWORD: password
+  #     MONGO_INITDB_DATABASE: flaskdb
+  #     MONGODB_DATA_DIR: /data/db
+  #     MONDODB_LOG_DIR: /dev/null
+  #   volumes:
+  #     - .:/data/db
