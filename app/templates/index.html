@@ -7,7 +7,7 @@
   <title></title>
 </head>
 
-<body bgcolor="black">
+<body>
   <canvas id="myChart"></canvas>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
@@ -22,10 +22,10 @@
       data: {
         labels: {{ myNames|safe }},
         datasets: [{
-          label: 'My First dataset',
-          backgroundColor: 'rgb(50, 50, 50)',
-          borderColor: 'rgb(255, 100, 100)',
-          borderWidth: 2,
+          label: 'Dataset',
+          backgroundColor: '#465881',
+          borderColor: '#465881',
+          borderWidth: 0,
           data: {{ myData|safe }}
         }]
       },
@@ -58,11 +58,11 @@
             ticks: {
 
               fontSize: 20,
-              fontColor: 'rgb(255, 100, 100)'
+              fontColor: '#1b2a49'
             },
           }]
         },
-        events: ['click'],
+        // events: ['click','onHover'],
         onClick: graphClickEvent
       }
     });
@@ -91,13 +91,22 @@
         if(ev.key === 'Enter') {
             // Will change backgroundColor to blue as example
             this.style.backgroundColor = '#EFF';
-            $.getJSON('/update',{name: this.value},
-            function(data) {
-              chart.data.datasets[0].data = data['data'];
-              chart.data.labels= data['names'];
-              chart.update();  
-            });
-            this.value = "";
+
+            var rgex = /^[a-zA-Z0-9]+$/;
+            result = rgex.test(this.value);
+
+            if(result){
+              $.getJSON('/update',{name: this.value},
+              function(data) {
+                chart.data.datasets[0].data = data['data'];
+                chart.data.labels= data['names'];
+                chart.update();  
+              });
+              this.value = "";
+            } else {
+              alert("Check your entry!");
+            }
+
             // Avoid form submit
             return false;
         }
@@ -105,7 +114,7 @@
   </script> 
 
   <div class='container'>
-        <form>
+        Add a new distraction: <form>
             <input id="subject" type="text" class="large" name="subject">
         </form>
   </div>
